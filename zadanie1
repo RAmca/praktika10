@@ -1,0 +1,68 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <math.h>
+#include <locale.h>
+
+double f1(double x);
+double f2(double x);
+
+int main() {
+    setlocale(LC_ALL, "Russian");
+    double x;
+
+    printf("Введите значение x: ");
+    scanf("%lf", &x);
+
+    double val_f1 = f1(x);
+    double val_f2 = f2(x);
+
+    double mult = val_f1 * val_f2;
+    double diff_sq = (val_f1 * val_f1) - (val_f2 * val_f2);
+    double dbl_sum = 2 * (val_f1 + val_f2);
+
+    printf("\nРезультаты:\n");
+    printf("F1(x) = %lf\n", val_f1);
+    printf("F2(x) = %lf\n", val_f2);
+
+    printf("Произведение = %lf\n", mult);
+    printf("Разность квадратов = %lf\n", diff_sq);
+    printf("Удвоенная сумма = %lf\n", dbl_sum);
+
+    int choice;
+    printf("\n--- МЕНЮ ---\n");
+    printf("1 - Только F1(x)\n");
+    printf("2 - Только F2(x)\n");
+    printf("3 - Произведение\n");
+    printf("4 - Разность квадратов\n");
+    printf("5 - Удвоенная сумма\n");
+    printf("Ваш выбор: ");
+    scanf("%d", &choice);
+
+    switch (choice) {
+        case 1: printf("F1(x) = %lf\n", val_f1); break;
+        case 2: printf("F2(x) = %lf\n", val_f2); break;
+        case 3: printf("Произведение = %lf\n", mult); break;
+        case 4: printf("Разность квадратов = %lf\n", diff_sq); break;
+        case 5: printf("Удвоенная сумма = %lf\n", dbl_sum); break;
+        default: printf("Неверный выбор.\n");
+    }
+
+    return 0;
+}
+
+double f1(double x) {
+    double y;
+    if (x <= 3) {
+        y = x * x - 3 * x + 9;
+    } else {
+        y = 1.0 / (x * x * x + 3);
+    }
+    return y;
+}
+
+double f2(double x) {
+    double y;
+    // x * e^(sin(x^2))
+    y = x * exp(sin(x * x));
+    return y;
+}
