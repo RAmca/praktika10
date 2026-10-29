@@ -1,0 +1,68 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <math.h>
+#include <locale.h>
+
+double asin_n(double x, int N);
+double asin_eps(double x, double eps);
+
+int main() {
+    setlocale(LC_ALL, "Russian");
+    double x, eps;
+    int N;
+
+    printf("Введите x (|x| < 1): ");
+    scanf("%lf", &x);
+
+    if (fabs(x) >= 1.0) {
+        printf("Ошибка: |x| должен быть строго меньше 1.\n");
+        return 1;
+    }
+
+    printf("Введите количество членов ряда N: ");
+    scanf("%d", &N);
+    printf("Введите точность eps (например, 1e-5): ");
+    scanf("%lf", &eps);
+
+    double std_val = asin(x);
+    
+    double my_n = asin_n(x, N);
+    
+    double my_eps = asin_eps(x, eps);
+
+    printf("\n--- Сравнение результатов ---\n");
+    printf("Стандартная asin(x): %lf\n", std_val);
+    printf("Через N членов:      %lf (отклонение: %lf)\n", my_n, fabs(std_val - my_n));
+    printf("С точностью eps:     %lf (отклонение: %lf)\n", my_eps, fabs(std_val - my_eps));
+
+    return 0;
+}
+
+double asin_n(double x, int N) {
+    double sum = x;
+    double term = x;
+    double x2 = x * x;
+
+    for (int n = 1; n < N; n++) {
+        term *= (2.0 * n - 1.0) / (2.0 * n) * x2; 
+        sum += term / (2.0 * n + 1.0);
+    }
+    return sum;
+}
+
+double asin_eps(double x, double eps) {
+    double sum = x;
+    double term = x;
+    double x2 = x * x;
+    int n = 1;
+    double current_addition;
+
+    do {
+        term *= (2.0 * n - 1.0) / (2.0 * n) * x2;
+        current_addition = term / (2.0 * n + 1.0);
+        sum += current_addition;
+        n++;
+    } while (fabs(current_addition) > eps);
+
+    return sum;
+}
