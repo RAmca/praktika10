@@ -1,0 +1,78 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <locale.h>
+
+float area_trapezoid(float a, float h);
+void draw_trapezoid(int a, int h, char symbol);
+void print_definition();
+
+int main() {
+    setlocale(LC_ALL, "Russian");
+    int choice;
+    float a, h;
+    char sym;
+
+    printf("=== Программа для работы с равнобедренной трапецией ===\n");
+
+    printf("Введите верхнее основание a: ");
+    scanf("%f", &a);
+    printf("Введите высоту h: ");
+    scanf("%f", &h);
+    printf("Введите символ для рисования: ");
+    scanf(" %c", &sym);
+
+    printf("\n--- МЕНЮ ---\n");
+    printf("1 - Рассчитать площадь\n");
+    printf("2 - Вывести определение фигуры\n");
+    printf("3 - Нарисовать фигуру\n");
+    printf("Ваш выбор: ");
+    scanf("%d", &choice);
+
+    switch (choice) {
+        case 1:
+            printf("Площадь трапеции = %.2f\n", area_trapezoid(a, h));
+            break;
+        case 2:
+            print_definition();
+            break;
+        case 3:
+            draw_trapezoid((int)a, (int)h, sym);
+            break;
+        default:
+            printf("Неверный выбор.\n");
+    }
+
+    return 0;
+}
+
+float area_trapezoid(float a, float h) {
+    float b = a + 2.0f * (h - 1.0f);
+    return ((a + b) / 2.0f) * h;
+}
+
+void print_definition() {
+    printf("\nРавнобедренная трапеция — это трапеция, у которой боковые стороны равны.\n");
+}
+
+void draw_trapezoid(int a, int h, char symbol) {
+    int b = a + 2 * (h - 1);
+    printf("\n");
+    for (int i = 0; i < h; i++) {
+        for (int j = 0; j < (h - 1 - i); j++) {
+            printf(" ");
+        }
+        if (i == 0) {
+            for (int j = 0; j < a; j++) printf("%c", symbol);
+        } else if (i == h - 1) {
+            for (int j = 0; j < b; j++) printf("%c", symbol);
+        } else {
+            printf("%c", symbol);
+            int inner_spaces = a + 2 * i - 2;
+            for (int j = 0; j < inner_spaces; j++) {
+                printf(" ");
+            }
+            printf("%c", symbol);
+        }
+        printf("\n");
+    }
+}
